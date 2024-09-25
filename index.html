@@ -1,0 +1,81 @@
+<html>
+<head>
+    <title>PubNub SSE</title>
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+    h1 {
+        background-color: #333;
+        color: #fff;
+        margin: 0;
+        padding: 10px;
+        text-align: center;
+    }
+    #events {
+        margin: 10px;
+        padding: 10px;
+        font-family: monospace;
+        border: 1px solid #333;
+        border-radius: 5px;
+        height: calc(100vh - 100px);
+        overflow-y: scroll;
+    }
+</style>
+<body>
+    <h1>PubNub SSE</h1>
+    <div id="events"></div>
+</body>
+<script src="pubnub.js"></script>
+<script>
+(()=>{
+
+    // PubNub Setup
+    const userId = Math.random().toString(36).substring(7);
+    const authKey = 'auth-key';
+    const channel = 'Commands';
+    const pubkey = 'pub-c-a88f5e0f-af28-4847-ad52-30495d0cbcb8';
+    const subkey = 'sub-c-a8cbfccb-676b-4034-9681-dfed95af8d7e';
+    const pubnub = PubNub({
+        subscribeKey: subkey,
+        publishKey: pubkey,
+        authKey: authKey,
+        userId: userId,
+    });
+
+    // Subscribe to the event channel
+    const subscription = pubnub.subscribe({
+        channel: channel,
+        messages: receiveEvents,
+    });
+
+    // End subscription
+    // subscription.unsubscribe();
+
+    // Event Processing
+    const events = document.getElementById('events');
+    function receiveEvents(event) {
+        events.innerHTML = `<p>${JSON.stringify(event)}</p>` + events.innerHTML;
+    }
+
+    // Events Example
+    /*
+    let eventId = 0;
+    setInterval(() => {
+        pubnub.publish({
+            channel: channel,
+            message: {
+                eventId: ++eventId, 
+                userId: userId,
+                data: `Event ${eventId} from ${userId} at ${new Date().toISOString()}`,
+            },
+        });
+    }, 1000);
+    */
+
+})();
+</script>
+</html>
