@@ -34,8 +34,8 @@
 (()=>{
 
     // PubNub Setup
-    const userId = Math.random().toString(36).substring(7);
-    const authKey = 'auth-key';
+    const userId = `user-${Math.random().toString(4).substring(7)}`;
+    const authKey = `auth-${Math.random().toString(36).substring(7)}`;
     const channel = 'Commands';
     const pubkey = 'pub-c-a88f5e0f-af28-4847-ad52-30495d0cbcb8';
     const subkey = 'sub-c-a8cbfccb-676b-4034-9681-dfed95af8d7e';

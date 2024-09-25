@@ -13,7 +13,7 @@ Setup the SDK as follows in the example.
 <script>
 
 // PubNub Setup
-const userId = Math.random().toString(36).substring(7);
+const userId = 'user-id';
 const authKey = 'auth-key';
 const channel = 'Commands';
 const pubkey = 'pub-c-a88f5e0f-af28-4847-ad52-30495d0cbcb8';

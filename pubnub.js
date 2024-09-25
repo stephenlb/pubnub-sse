@@ -17,19 +17,21 @@ const PubNub = (setup) => {
 const defaultSubkey  = 'demo';
 const defaultPubkey  = 'demo';
 const defaultChannel = 'pubnub';
+const defaultUserId  = 'user-default';
+const defaultAuthKey = 'user-default';
 const defaultOrigin  = 'v6.pubnub3.com'; // HTTP/3 and IPv6
-const defaultUUID    = `uuid-${+new Date()}`;
 
 const subscribe = PubNub.subscribe = (setup={}) => {
-    let subkey     = setup.subkey     || PubNub.subscribeKey || defaultSubkey;
-    let channel    = setup.channel    || PubNub.channel      || defaultChannel;
-    let origin     = setup.origin     || PubNub.origin       || defaultOrigin;
-    let messages   = setup.messages   || PubNub.messages     || (a => a);
-    let filter     = setup.filter     || PubNub.filter       || '';
-    let authkey    = setup.authkey    || PubNub.authKey      || '';
-    let timetoken  = setup.timetoken  || '10000';
+    let subkey     = setup.subscribeKey || PubNub.subscribeKey || defaultSubkey;
+    let channel    = setup.channel      || PubNub.channel      || defaultChannel;
+    let origin     = setup.origin       || PubNub.origin       || defaultOrigin;
+    let uuid       = setup.userId       || PubNub.userId       || defaultUserId;
+    let authkey    = setup.authKey      || PubNub.authKey      || defaultAuthKey;
+    let messages   = setup.messages     || PubNub.messages     || (a => a);
+    let filter     = setup.filter       || PubNub.filter       || '';
+    let timetoken  = setup.timetoken    || '10000';
     let filterExp  = `${filter?'&filter-expr=':''}${encodeURIComponent(filter)}`;
-    let params     = `auth=${authkey}${filterExp}`;
+    let params     = `auth=${authkey}${filterExp}&uuid=${uuid}`;
     let decoder    = new TextDecoder();
     let boundry    = /[\n]/g;
     let resolver   = null;
@@ -114,16 +116,17 @@ const subscribe = PubNub.subscribe = (setup={}) => {
 };
 
 const publish = PubNub.publish = async (setup={}) => {
-    let pubkey    = setup.pubkey     || PubNub.publishKey   || defaultPubkey;
-    let subkey    = setup.subkey     || PubNub.subscribeKey || defaultSubkey;
-    let channel   = setup.channel    || PubNub.channel      || defaultChannel;
-    let uuid      = setup.userId     || setup.uuid          || PubNub.uuid         || defaultUUID;
-    let authkey   = setup.authKey    || setup.authkey       || PubNub.authKey      || '';
-    let origin    = setup.origin     || PubNub.origin       || defaultOrigin;
-    let message   = setup.message    || 'missing-message';
-    let metadata  = setup.metadata   || PubNub.metadata     || {};
+    let pubkey    = setup.publishKey   || PubNub.publishKey   || defaultPubkey;
+    let subkey    = setup.subscribeKey || PubNub.subscribeKey || defaultSubkey;
+    let channel   = setup.channel      || PubNub.channel      || defaultChannel;
+    let userId    = setup.userId       || PubNub.userId       || defaultUserId;
+    let authkey   = setup.authKey      || PubNub.authKey      || defaultAuthKey;
+    let origin    = setup.origin       || PubNub.origin       || defaultOrigin;
+    let uuid      = setup.userId       || PubNub.userId       || defaultUserId;
+    let message   = setup.message      || 'missing-message';
+    let metadata  = setup.metadata     || PubNub.metadata     || {};
     let uri       = `https://${origin}/publish/${pubkey}/${subkey}/0/${channel}/0`;
-    let params    = `auth=${authkey}&meta=${encodeURIComponent(JSON.stringify(metadata))}`;
+    let params    = `auth=${authkey}&meta=${encodeURIComponent(JSON.stringify(metadata))}&uuid=${uuid}`;
     let payload   = { method: 'POST', body: JSON.stringify(message) };
 
     try      { return await fetch(`${uri}?${params}`, payload) }
