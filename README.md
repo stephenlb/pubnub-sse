@@ -35,9 +35,8 @@ const subscription = pubnub.subscribe({
 // subscription.unsubscribe();
 
 // Event Processing
-const events = document.getElementById('events');
 function receiveEvents(event) {
-    events.innerHTML = `<p>${JSON.stringify(event)}</p>` + events.innerHTML;
+    console.log(event);
 }
 
 // Publish Events Example
