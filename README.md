@@ -13,8 +13,8 @@ open index.html
 
 #### Important Files:
 
- - `pubnub.js` SSE Streaming SDK
- - `index.html` Example app
+ - `pubnub.js` PubNub SSE Streaming SDK
+ - `index.html` Example app open to see a demo using streaming data.
 
 ![PubNub SSE Screenshot](media/screenshot.png)
 
@@ -39,7 +39,7 @@ const pubnub = PubNub({
     userId: userId,
 });
 
-// Subscribe to Events
+// Subscribe to Events "Starts the Stream"
 const subscription = pubnub.subscribe({
     channel: channel,
     messages: receiveEvents,
