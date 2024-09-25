@@ -1,11 +1,17 @@
-// --------------------------------------------
+// ---------------------------------------------
 // SSE over HTTP/3 with IPv4+IPv6 PubNub Client
-// --------------------------------------------
-// Dedicated queue per channel for maximum performance
-// SSE-only
-// IPv6, IPv4
-// HTTP/3, HTTP/2, HTTP/1.1 fallback
-// TLS 1.3
+// ---------------------------------------------
+// - - - - - - - - - - - - - - - - - - - - - - -
+// Features
+// - - - - - - - - - - - - - - - - - - - - - - -
+//  - Publish/Subscribe
+//  - SSE
+//  - Streamming Compression
+//  - Dedicated queue per channel for maximum performance
+//  - SSE over HTTP/3 with IPv4+IPv6
+//  - IPv6, IPv4
+//  - HTTP/3, HTTP/2, and HTTP/1.1 fallback
+//  - TLS 1.3
 
 const PubNub = (setup) => {
     for (let key of Object.keys(setup)) PubNub[key] = setup[key];
