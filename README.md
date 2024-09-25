@@ -3,9 +3,8 @@
 Easy to use PubNub SDK with SSE enabled by default.
 
 
-### Run Demo
+### Quick Run Demo
 
-Run `open index.html` for example.
 ```shell
 git clone https://github.com/stephenlb/pubnub-sse.git
 cd pubnub-sse
