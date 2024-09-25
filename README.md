@@ -2,11 +2,26 @@
 
 Easy to use PubNub SDK with SSE enabled by default.
 
-See `index.html` for example.
+
+### Run Demo
+
+Run `open index.html` for example.
+```shell
+git clone https://github.com/stephenlb/pubnub-sse.git
+cd pubnub-sse
+open index.html
+```
+
+#### Important Files:
+
+ - `pubnub.js` SSE Streaming SDK
+ - `index.html` Example app
 
 ![PubNub SSE Screenshot](media/screenshot.png)
 
 Setup the SDK as follows in the example.
+
+### Example Code
 
 ```html
 <script src="pubnub.js"></script>
