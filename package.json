@@ -1,6 +1,6 @@
 {
   "name": "pubnub-sse",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "PubNub SSE Protocol with some additions. SSE is basically utilizing the Transfer-Encoding: chunked HTTP header. The main difference is that we intentionally exclude `event: ` and `data: ` headers that are included in each message. We remove these headers for reducing bandwidth consumed for every message payload. At high volumes these extra headers add a lot more to the bandwidth consumptions. So we removed them for added efficiency. Additionally most browsers have a 60 second limiter on SSE in the EventSource, and we control this on our infrastructure with our distributed configuration service. This allows us to dynamically control this setting from our servers, rather than a client or browser. And we like the value at least set to 280 seconds. This allows longer waits for message delivery where SSE defaults to re-fetching 60 second time windows. We have more innovation plans here as well.",
   "main": "pubnub.js",
   "scripts": {

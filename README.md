@@ -26,6 +26,29 @@ open index.html
 
 Setup the SDK as follows in the example.
 
+### Subscription Async Iterator
+
+```javascript
+const pubnub = PubNub({ subscribeKey: 'demo', publishKey: 'demo'});
+const subscription = pubnub.subscribe({channel: 'test'});
+
+let count = 0;
+for await (const msg of subscription) {
+    console.log(msg);
+    if (count++ >= 2) break;
+}
+```
+
+### Subscription Callback
+```javascript
+const pubnub = PubNub({ subscribeKey: 'demo', publishKey: 'demo'});
+const subscription = pubnub.subscribe({channel: 'test', messages: reciever});
+
+function reciever(msg) {
+    console.log(msg);
+}
+```
+
 ### Example Code
 
 ```html
