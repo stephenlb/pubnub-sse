@@ -79,11 +79,11 @@ describe('PubNub SDK Tests', () => {
         it('should encrypt and decrypt messages', async () => {
             const message = { text: "Hello World" };
             const stringData = JSON.stringify(message);
-            const encrypted = pubnubCryptor.encrypt(stringData, cipherKey);
+            const encrypted = pubnubCryptor.encrypt(stringData);
             expect(message).to.be.an('object');
             expect(encrypted).to.be.a('string');
 
-            const decrypted = pubnubCryptor.decrypt(encrypted, cipherKey);
+            const decrypted = pubnubCryptor.decrypt(encrypted);
             expect(decrypted).to.be.an('object');
             expect(message).to.deep.equal(decrypted);
         });

@@ -82,7 +82,7 @@ const pubnubCryptor = new PubNubCryptor({
 
 const message = { text: "Hello World" };
 const stringData = JSON.stringify(message);
-const encrypted = pubnubCryptor.encrypt(stringData, cipherKey);
+const encrypted = pubnubCryptor.encrypt(stringData);
 const channel = `test-channel-${Math.random()}`;
 const subscription = pubnubInstance.subscribe({channel: channel});
 
@@ -93,7 +93,7 @@ setTimeout(async () => {
 
 // Subscription Stream
 for await (const encryptedMessage of subscription) {
-    const decrypted = pubnubCryptor.decrypt(encryptedMessage, cipherKey);
+    const decrypted = pubnubCryptor.decrypt(encryptedMessage);
     expect(encryptedMessage).to.equal(encrypted);
     expect(encryptedMessage).to.be.a('string');
     expect(decrypted).to.be.an('object');
