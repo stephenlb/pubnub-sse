@@ -52,8 +52,11 @@ function reciever(msg) {
 
 ### Encryption Example
 
+Using the `crypto-js` common crypto lib for encryption/decryption.
+With added support for Cross-Platform messaging.
+
 ```javascript
-const PubNub = require('../pubnub.js');  // npm install pubnub-sse
+const PubNub = require('pubnub-sse');    // npm install pubnub-sse
 const PubNubCryptor = require('pubnub'); // npm install pubnub
 
 const pubkey = 'demo';
