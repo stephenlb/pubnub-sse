@@ -3,7 +3,13 @@
 Easy to use PubNub SDK with SSE enabled by default.
 
 
-### Quick Run Demo
+### NPM Install
+
+```shell
+npm install pubnub-sse
+```
+
+### Run a Quick Demo
 
 ```shell
 git clone https://github.com/stephenlb/pubnub-sse.git

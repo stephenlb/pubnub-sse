@@ -13,12 +13,13 @@
 //  - HTTP/3, HTTP/2, and HTTP/1.1 fallback
 //  - TLS 1.3
 
-const PubNub = (setup) => {
+(async ()=>{ 
+
+// PubNub Client
+function PubNub(setup) {
     for (let key of Object.keys(setup)) PubNub[key] = setup[key];
     return PubNub;
-};
-
-(async ()=>{ 
+}
 
 const defaultSubkey  = 'demo';
 const defaultPubkey  = 'demo';
@@ -112,13 +113,15 @@ const subscribe = PubNub.subscribe = (setup={}) => {
         while (subscribed) yield await receiver;
     }
 
-    subscription.messages    = receiver => messages = setup.messages = receiver;
-    subscription.unsubscribe = () => {
+    const iterator = subscription();
+    iterator.messages    = receiver => messages = setup.messages = receiver;
+    iterator.unsubscribe = () => {
         subscribed = false;
         controller.abort();
     };
 
-    return subscription;
+    // Return Async Generator Iterator
+    return iterator;
 };
 
 const publish = PubNub.publish = async (setup={}) => {
@@ -138,5 +141,9 @@ const publish = PubNub.publish = async (setup={}) => {
     try      { return await fetch(`${uri}?${params}`, payload) }
     catch(e) { return false }
 };
+
+// Conditionally export pubnub.js for Node.js and Browser
+if (typeof module !== 'undefined') module.exports = PubNub;
+if (typeof window !== 'undefined') window.PubNub = PubNub;
 
 })();
