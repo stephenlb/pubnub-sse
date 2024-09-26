@@ -49,6 +49,58 @@ function reciever(msg) {
 }
 ```
 
+
+### Encryption Example
+
+```javascript
+const PubNub = require('../pubnub.js');  // npm install pubnub-sse
+const PubNubCryptor = require('pubnub'); // npm install pubnub
+
+const pubkey = 'demo';
+const subkey = 'demo';
+const authKey = 'demo-auth-key';
+const userId = 'test-user-id';
+const cipherKey = 'pubnubenigma';
+
+const pubnubInstance = PubNub({
+    publishKey: pubkey,
+    subscribeKey: subkey,
+    authKey: authKey,
+    userId: userId,
+});
+
+const pubnubCryptor = new PubNubCryptor({
+    subscribeKey: subkey,
+    publishKey: pubkey,
+    uuid: userId,
+    authKey: authKey,
+    cipherKey: cipherKey,
+});
+
+const message = { text: "Hello World" };
+const stringData = JSON.stringify(message);
+const encrypted = pubnubCryptor.encrypt(stringData, cipherKey);
+const channel = `test-channel-${Math.random()}`;
+const subscription = pubnubInstance.subscribe({channel: channel});
+
+// Publish
+setTimeout(async () => {
+    await pubnubInstance.publish({ channel: channel, message: encrypted});
+}, 1000);
+
+// Subscription Stream
+for await (const encryptedMessage of subscription) {
+    const decrypted = pubnubCryptor.decrypt(encryptedMessage, cipherKey);
+    expect(encryptedMessage).to.equal(encrypted);
+    expect(encryptedMessage).to.be.a('string');
+    expect(decrypted).to.be.an('object');
+    expect(message).to.deep.equal(decrypted);
+    break;
+}
+
+subscription.unsubscribe();
+```
+
 ### Example Code
 
 ```html

@@ -1,20 +1,27 @@
 // test/pubnub.test.js
 const { expect } = require('chai');
-const nock = require('nock');
 const PubNub = require('../pubnub.js');
+const PubNubCryptor = require('pubnub');
 
 const pubkey = 'demo';
 const subkey = 'demo';
 const authKey = 'demo-auth-key';
-const origin = 'ps.pndsn.com';
 const userId = 'test-user-id';
+const cipherKey = 'pubnubenigma';
 
-describe('PubNub Client', () => {
+describe('PubNub SDK Tests', () => {
     const pubnubInstance = PubNub({
         publishKey: pubkey,
         subscribeKey: subkey,
         authKey: authKey,
         userId: userId,
+    });
+    const pubnubCryptor = new PubNubCryptor({
+        subscribeKey: subkey,
+        publishKey: pubkey,
+        uuid: userId,
+        authKey: authKey,
+        cipherKey: cipherKey,
     });
 
     describe('publish', () => {
@@ -67,4 +74,44 @@ describe('PubNub Client', () => {
             subscription.unsubscribe();
         });
     });
+
+    describe('encryption', async () => {
+        it('should encrypt and decrypt messages', async () => {
+            const message = { text: "Hello World" };
+            const stringData = JSON.stringify(message);
+            const encrypted = pubnubCryptor.encrypt(stringData, cipherKey);
+            expect(message).to.be.an('object');
+            expect(encrypted).to.be.a('string');
+
+            const decrypted = pubnubCryptor.decrypt(encrypted, cipherKey);
+            expect(decrypted).to.be.an('object');
+            expect(message).to.deep.equal(decrypted);
+        });
+
+        it('should send and recieve encrypted messages', async () => {
+            const message = { text: "Hello World" };
+            const stringData = JSON.stringify(message);
+            const encrypted = pubnubCryptor.encrypt(stringData, cipherKey);
+            const channel = `test-channel-${Math.random()}`;
+            const subscription = pubnubInstance.subscribe({channel: channel});
+
+            // Publish
+            setTimeout(async () => {
+                await pubnubInstance.publish({ channel: channel, message: encrypted});
+            }, 1000);
+
+            // Subscription Stream
+            for await (const encryptedMessage of subscription) {
+                const decrypted = pubnubCryptor.decrypt(encryptedMessage, cipherKey);
+                expect(encryptedMessage).to.equal(encrypted);
+                expect(encryptedMessage).to.be.a('string');
+                expect(decrypted).to.be.an('object');
+                expect(message).to.deep.equal(decrypted);
+                break;
+            }
+
+            subscription.unsubscribe();
+        });
+    });
+
 });
