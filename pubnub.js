@@ -26,7 +26,7 @@ const defaultPubkey  = 'demo';
 const defaultChannel = 'pubnub';
 const defaultUserId  = 'user-default';
 const defaultAuthKey = 'user-default';
-const defaultOrigin  = 'v6.pubnub3.com'; // HTTP/3 and IPv6
+const defaultOrigin  = 'h2.pubnubapi.com';
 
 const subscribe = PubNub.subscribe = (setup={}) => {
     let subkey     = setup.subscribeKey || PubNub.subscribeKey || defaultSubkey;
